@@ -1,8 +1,8 @@
 {
-  "name": "cdk-parcel-lambda-example",
+  "name": "cdk-cfn-response-example",
   "version": "0.1.0",
   "bin": {
-    "cdk-parcel-lambda-example": "bin/cdk-parcel-lambda-example.js"
+    "cdk-cfn-response-example": "bin/cdk-cfn-response-example.js"
   },
   "scripts": {
     "build": "tsc",
@@ -25,6 +25,8 @@
     "@aws-cdk/aws-lambda": "1.60.0",
     "@aws-cdk/aws-lambda-nodejs": "1.60.0",
     "@aws-cdk/core": "1.60.0",
+    "@types/aws-lambda": "^8.10.62",
+    "aws-lambda": "^1.0.6",
     "aws-sdk": "^2.738.0",
     "parcel": "2.0.0-beta.1",
     "source-map-support": "^0.5.16"

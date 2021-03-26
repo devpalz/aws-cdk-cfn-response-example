@@ -1,4 +1,6 @@
 import AWS = require('aws-sdk');
+import { Callback, CloudFormationCustomResourceEvent, Context } from "aws-lambda";
+import { CfnResponse } from './cfn-response';
 
 export interface MyFirstLambdaResponse {
     message: string
@@ -8,17 +10,22 @@ export interface MyFirstLambdaRequest {
     id: string
 }
 
-export const handler = async (request: MyFirstLambdaRequest): Promise<MyFirstLambdaResponse> => {
+export const handler = async (event: CloudFormationCustomResourceEvent, context: Context, callback?: Callback): Promise<void> => {
 
-    console.log("Recieved request", request)
+    console.log("Recieved event", event)
 
     const ec2 = new AWS.EC2();
 
     const describeResponse = await ec2.describeInstances().promise()
 
     if (describeResponse.Reservations) {
-        return { message: `Response was... ${JSON.stringify(describeResponse.Reservations)}` }
+
+        const response: MyFirstLambdaResponse = {
+            message: `I described and you have ${describeResponse.Reservations.length} EC2 Instance`
+        }
+
+        CfnResponse.submitResponse(CfnResponse.SUCCESS, event, context, { data: response })
     } else {
-        return { message: 'Nothing to report here!' }
+        CfnResponse.submitResponse(CfnResponse.FAILED, event, context)
     }
 }
